@@ -33,7 +33,7 @@ public class MetadataBuilder extends ChainedDocumentBuilder {
         //addBuilder(DocumentBuilderFactory.getJCDDocumentBuilder());
         //addBuilder(DocumentBuilderFactory.getColorLayoutBuilder());
         //addBuilder(DocumentBuilderFactory.getScalableColorBuilder());
-        //addBuilder(DocumentBuilderFactory.getEdgeHistogramBuilder());
+        addBuilder(DocumentBuilderFactory.getEdgeHistogramBuilder());
         //addBuilder(DocumentBuilderFactory.getAutoColorCorrelogramDocumentBuilder());
         //addBuilder(DocumentBuilderFactory.getTamuraDocumentBuilder());
         //addBuilder(DocumentBuilderFactory.getGaborDocumentBuilder());
@@ -44,7 +44,7 @@ public class MetadataBuilder extends ChainedDocumentBuilder {
         //addBuilder(DocumentBuilderFactory.getLuminanceLayoutDocumentBuilder());
         //addBuilder(DocumentBuilderFactory.getPHOGDocumentBuilder());
         //addBuilder(new SurfDocumentBuilder());
-        addBuilder(new SiftDocumentBuilder());
+        addBuilder(new CorrectedSiftDocumentBuilder());
     }
 
     @Override

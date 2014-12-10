@@ -18,6 +18,10 @@ import java.io.IOException;
 public class LireIndexer {
     private static Logger logger = Base.logger(LireIndexer.class);
 
+    public static void index() throws IOException {
+        index(Config.data_path);
+    }
+
     public static void index(String data_path) throws IOException {
         index(8, data_path);
     }
@@ -38,6 +42,7 @@ public class LireIndexer {
         //}
         try {
             t.join();
+            logger.info("Indexing finished.");
         } catch (InterruptedException e) {
             logger.warn("Indexing interrupted.");
         }

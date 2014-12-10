@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
  * Created by Epsirom on 14/12/9.
  */
 public class Base {
-    public static Logger logger(Object obj) {
+    public static Logger logger(Object obj){
         return LoggerFactory.getLogger(obj.getClass());
     }
 
