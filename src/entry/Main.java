@@ -52,6 +52,7 @@ public class Main {
                         .withArgName("NUM-OF-RESULTS")
                         .create("n")
         );
+        options.addOption("ap", "compute-ap", false, "Compute the ap after retrieval.");
         CommandLineParser parser = new BasicParser();
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -64,6 +65,7 @@ public class Main {
             Config.query_image = cmd.getOptionValue("query-image");
             Config.result_file = cmd.getOptionValue("result-file");
             Config.num_of_results = Integer.parseInt(cmd.getOptionValue("num-of-results", "50"));
+            Config.compute_ap = cmd.hasOption("compute-ap");
             skip_index = cmd.hasOption("skip-index");
 
             logger.info("Process started.");

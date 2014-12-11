@@ -8,10 +8,18 @@ import java.util.TreeSet;
  * Created by Epsirom on 14/12/11.
  */
 public class ComputeAP {
-    public static Set<String> pos_set = new TreeSet<String>();
-    public static Set<String> amb_set = new TreeSet<String>();
+    public Set<String> pos_set = new TreeSet<String>();
+    public Set<String> amb_set = new TreeSet<String>();
 
-    public static void loadPosSetFromFile(BufferedReader in) throws IOException {
+    public ComputeAP() {}
+
+    public ComputeAP(String groundTruth) throws IOException {
+        loadPosSetFromFile(getReaderByFile(groundTruth + "good.txt"));
+        loadPosSetFromFile(getReaderByFile(groundTruth + "ok.txt"));
+        loadAmbSetFromFile(getReaderByFile(groundTruth + "junk.txt"));
+    }
+
+    public void loadPosSetFromFile(BufferedReader in) throws IOException {
         String buf = in.readLine();
         while (buf != null) {
             pos_set.add(buf);
@@ -19,7 +27,7 @@ public class ComputeAP {
         }
     }
 
-    public static void loadAmbSetFromFile(BufferedReader in) throws IOException {
+    public void loadAmbSetFromFile(BufferedReader in) throws IOException {
         String buf = in.readLine();
         while (buf != null) {
             amb_set.add(buf);
@@ -42,7 +50,7 @@ public class ComputeAP {
         return s;
     }
 
-    public static float computeAP(Set<String> ranked_list) {
+    public float computeAP(Set<String> ranked_list) {
         float old_recall = 0.0F, old_precision = 1.0F;
         float ap = 0.0F;
         int intersect_size = 0;

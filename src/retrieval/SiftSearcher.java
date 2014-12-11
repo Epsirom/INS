@@ -43,12 +43,12 @@ public class SiftSearcher extends AbstractImageSearcher {
         try {
             this.logger.info("Start searching by sift features...");
             List<Feature> features = this.extractor.computeSiftFeatures(image);
-            System.out.println(
-                    this.getDistance(
-                            features,
-                            this.extractor.computeSiftFeatures(ImageIO.read(new FileInputStream("dataset/00008.jpg")))
-                    )
-            );
+//            System.out.println(
+//                    this.getDistance(
+//                            features,
+//                            this.extractor.computeSiftFeatures(ImageIO.read(new FileInputStream("dataset/00008.jpg")))
+//                    )
+//            );
             return this.search(features, reader);
         } catch (Exception e) {
             this.logger.error("Search by sift failed: {}", e.toString());
@@ -64,7 +64,7 @@ public class SiftSearcher extends AbstractImageSearcher {
             for (int i = 0; i < numDocs; ++i) {
                 Document doc = reader.document(i);
                 float dist = this.getDistance(features, this.getSiftFeatures(doc));
-                System.out.println("Document " + doc.getField(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue() + ", distance " + dist);
+//                System.out.println("Document " + doc.getField(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue() + ", distance " + dist);
                 if (this.maxDistance < 0) {
                     this.maxDistance = dist;
                 }
@@ -80,7 +80,8 @@ public class SiftSearcher extends AbstractImageSearcher {
                 }
             }
         } catch (Exception e) {
-
+            logger.error("Search error: {}", e.toString());
+            e.printStackTrace();
         }
         SimpleImageSearchHits hits = new SimpleImageSearchHits(this.docs, this.maxDistance);
         return hits;

@@ -27,22 +27,22 @@ import java.util.Iterator;
 public class MetadataBuilder extends ChainedDocumentBuilder {
     public MetadataBuilder() {
         super();
-        //addBuilder(DocumentBuilderFactory.getColorLayoutBuilder());
-        //addBuilder(DocumentBuilderFactory.getCEDDDocumentBuilder());
-        //addBuilder(DocumentBuilderFactory.getFCTHDocumentBuilder());
-        //addBuilder(DocumentBuilderFactory.getJCDDocumentBuilder());
-        //addBuilder(DocumentBuilderFactory.getColorLayoutBuilder());
-        //addBuilder(DocumentBuilderFactory.getScalableColorBuilder());
+        addBuilder(DocumentBuilderFactory.getColorLayoutBuilder());
+        addBuilder(DocumentBuilderFactory.getCEDDDocumentBuilder());
+        addBuilder(DocumentBuilderFactory.getFCTHDocumentBuilder());
+        addBuilder(DocumentBuilderFactory.getJCDDocumentBuilder());
+        addBuilder(DocumentBuilderFactory.getColorLayoutBuilder());
+        addBuilder(DocumentBuilderFactory.getScalableColorBuilder());
         addBuilder(DocumentBuilderFactory.getEdgeHistogramBuilder());
-        //addBuilder(DocumentBuilderFactory.getAutoColorCorrelogramDocumentBuilder());
-        //addBuilder(DocumentBuilderFactory.getTamuraDocumentBuilder());
-        //addBuilder(DocumentBuilderFactory.getGaborDocumentBuilder());
-        //addBuilder(DocumentBuilderFactory.getColorHistogramDocumentBuilder());
-        //addBuilder(DocumentBuilderFactory.getJpegCoefficientHistogramDocumentBuilder());
-        //addBuilder(DocumentBuilderFactory.getOpponentHistogramDocumentBuilder());
-        //addBuilder(DocumentBuilderFactory.getJointHistogramDocumentBuilder());
-        //addBuilder(DocumentBuilderFactory.getLuminanceLayoutDocumentBuilder());
-        //addBuilder(DocumentBuilderFactory.getPHOGDocumentBuilder());
+        addBuilder(DocumentBuilderFactory.getAutoColorCorrelogramDocumentBuilder());
+        addBuilder(DocumentBuilderFactory.getTamuraDocumentBuilder());
+        addBuilder(DocumentBuilderFactory.getGaborDocumentBuilder());
+        addBuilder(DocumentBuilderFactory.getColorHistogramDocumentBuilder());
+        addBuilder(DocumentBuilderFactory.getJpegCoefficientHistogramDocumentBuilder());
+        addBuilder(DocumentBuilderFactory.getOpponentHistogramDocumentBuilder());
+        addBuilder(DocumentBuilderFactory.getJointHistogramDocumentBuilder());
+        addBuilder(DocumentBuilderFactory.getLuminanceLayoutDocumentBuilder());
+        addBuilder(DocumentBuilderFactory.getPHOGDocumentBuilder());
         //addBuilder(new SurfDocumentBuilder());
         addBuilder(new CorrectedSiftDocumentBuilder());
     }
