@@ -119,27 +119,32 @@ public class LireSearcher {
         }
     }
 
+    public static BufferedImage getQueryImageByFile(String path) throws IOException {
+        BufferedReader in = new BufferedReader(new FileReader(path));
+        String str = in.readLine();
+        in.close();
+        Scanner s = new Scanner(str);
+        String filename = s.next();
+        float left = s.nextFloat();
+        float top = s.nextFloat();
+        float width = s.nextFloat();
+        float height = s.nextFloat();
+        BufferedImage image = ImageIO.read(new FileInputStream(Config.data_path + "/" + filename + ".jpg"));
+        if (left + width > image.getWidth()) {
+            width = image.getWidth() - left;
+        }
+        if (top + height > image.getHeight()) {
+            height = image.getHeight() - top;
+        }
+        return image.getSubimage((int)left, (int)top, (int)width, (int)height);
+    }
+
     public static void searchByConfig() throws Exception {
-        String searcher_name = "edge_histogram";
+        String searcher_name = "sift";
         if (Config.query_file != null) {
             try {
-                BufferedReader in = new BufferedReader(new FileReader(Config.query_file));
-                String str = in.readLine();
-                in.close();
-                Scanner s = new Scanner(str);
-                String filename = s.next();
-                float left = s.nextFloat();
-                float top = s.nextFloat();
-                float width = s.nextFloat();
-                float height = s.nextFloat();
-                BufferedImage image = ImageIO.read(new FileInputStream(Config.data_path + "/" + filename + ".jpg"));
-                if (left + width > image.getWidth()) {
-                    width = image.getWidth() - left;
-                }
-                if (top + height > image.getHeight()) {
-                    height = image.getHeight() - top;
-                }
-                printResult(searchImage(image.getSubimage((int)left, (int)top, (int)width, (int)height), searcher_name));
+                BufferedImage queryImage = getQueryImageByFile(Config.query_file);
+                printResult(searchImage(queryImage, searcher_name));
             } catch (Exception e) {
                 logger.error("Load query file failed: {}", e.toString());
                 e.printStackTrace();

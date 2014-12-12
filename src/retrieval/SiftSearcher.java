@@ -2,6 +2,7 @@ package retrieval;
 
 import entry.Base;
 import indexing.CorrectSiftFeature;
+import indexing.SiftKdTreeIndexer;
 import net.semanticmetadata.lire.AbstractImageSearcher;
 import net.semanticmetadata.lire.DocumentBuilder;
 import net.semanticmetadata.lire.ImageDuplicates;
@@ -10,6 +11,7 @@ import net.semanticmetadata.lire.imageanalysis.sift.Extractor;
 import net.semanticmetadata.lire.imageanalysis.sift.Feature;
 import net.semanticmetadata.lire.impl.SimpleImageSearchHits;
 import net.semanticmetadata.lire.impl.SimpleResult;
+import net.sf.javaml.core.kdtree.KDTree;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexableField;
@@ -63,7 +65,8 @@ public class SiftSearcher extends AbstractImageSearcher {
             int numDocs = reader.numDocs();
             for (int i = 0; i < numDocs; ++i) {
                 Document doc = reader.document(i);
-                float dist = this.getDistance(features, this.getSiftFeatures(doc));
+//                float dist = this.getDistanceByKDTree(features, this.getSiftFeatures(doc));
+                float dist = getDistance(features, this.getSiftFeatures(doc));
 //                System.out.println("Document " + doc.getField(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue() + ", distance " + dist);
                 if (this.maxDistance < 0) {
                     this.maxDistance = dist;
@@ -87,11 +90,11 @@ public class SiftSearcher extends AbstractImageSearcher {
         return hits;
     }
 
-    protected float getDistance(List<Feature> f1, List<Feature> f2) {
+    public static float getDistance(List<Feature> f1, List<Feature> f2) {
         int matchCount = 0;
         //float sum_dist = 0;
         for (Feature f : f1) {
-            float dist = this.getDistance(f, f2);
+            float dist = getDistance(f, f2);
             if (dist > 0) {
                 ++matchCount;
                 //sum_dist += dist;
@@ -101,7 +104,43 @@ public class SiftSearcher extends AbstractImageSearcher {
         return f1.size() - matchCount;
     }
 
-    protected float getDistance(Feature f, List<Feature> fs) {
+    public static float getDistanceByKDTree(List<Feature> f1, List<Feature> f2) {
+        int matchCount = 0;
+        KDTree tree = SiftKdTreeIndexer.buildTreeByFeatures(f2);
+        for (Feature f : f1) {
+            float dist = getDistance(f, tree);
+            if (dist > 0) {
+                ++matchCount;
+            }
+        }
+        return f1.size() - matchCount;
+    }
+
+    public static float getDistanceByKDTree(List<Feature> f1, KDTree tree) {
+        int matchCount = 0;
+        for (Feature f : f1) {
+            float dist = getDistance(f, tree);
+            if (dist > 0) {
+                ++matchCount;
+            }
+        }
+        return f1.size() - matchCount;
+    }
+
+    public static float getDistance(Feature f, KDTree tree) {
+        Object[] fs = (Object[])tree.nearest(f.descriptor, 2);
+        float dist1 = f.getDistance((Feature)fs[0]), dist2 = f.getDistance((Feature)fs[1]);
+        float ratio = 0.8F;
+        if (dist1 < dist2 * ratio) {
+            return dist1;
+        } else if (dist2 < dist1 * ratio) {
+            return dist2;
+        } else {
+            return -1.0F;
+        }
+    }
+
+    public static float getDistance(Feature f, List<Feature> fs) {
         float minDist = -1.0F, min2Dist = -1.0F;
         for (Feature ff : fs) {
             float dist = f.getDistance(ff);
@@ -122,7 +161,7 @@ public class SiftSearcher extends AbstractImageSearcher {
         }
     }
 
-    protected float getDistance(Feature f1, Feature f2) {
+    public static float getDistance(Feature f1, Feature f2) {
         double[] d1 = f1.descriptor;
         double[] d2 = f2.descriptor;
         double dist = 0;

@@ -11,4 +11,6 @@ public class Config {
     public static String result_file = null;
     public static String query_image = null;
     public static boolean compute_ap = false;
+    public static String tuning_file = null;
+    public static String distance_file = null;
 }

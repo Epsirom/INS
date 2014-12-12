@@ -4,6 +4,7 @@ import indexing.LireIndexer;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import retrieval.LireSearcher;
+import tuning.GeneticTuning;
 
 public class Main {
 
@@ -15,6 +16,18 @@ public class Main {
 
         Options options = new Options();
         options.addOption("h", "help", false, "Show this message.");
+        options.addOption(OptionBuilder.withLongOpt("tuning-file")
+                .withDescription("Enter tuning mode.")
+                .hasArg()
+                .withArgName("TUNING-FILE")
+                .create("t")
+        );
+        options.addOption(OptionBuilder.withLongOpt("distance-file")
+                .withDescription("Output distance file.")
+                .hasArg()
+                .withArgName("DISTANCE-FILE")
+                .create("df")
+        );
         options.addOption(OptionBuilder.withLongOpt("index-path")
                 .withDescription("Set the directory where the index is.")
                 .hasArg()
@@ -47,10 +60,10 @@ public class Main {
                 .create("r")
         );
         options.addOption(OptionBuilder.withLongOpt("num-of-results")
-                        .withDescription("How many results to retrive")
-                        .hasArg()
-                        .withArgName("NUM-OF-RESULTS")
-                        .create("n")
+                .withDescription("How many results to retrive")
+                .hasArg()
+                .withArgName("NUM-OF-RESULTS")
+                .create("n")
         );
         options.addOption("ap", "compute-ap", false, "Compute the ap after retrieval.");
         CommandLineParser parser = new BasicParser();
@@ -65,6 +78,18 @@ public class Main {
             Config.query_image = cmd.getOptionValue("query-image");
             Config.result_file = cmd.getOptionValue("result-file");
             Config.num_of_results = Integer.parseInt(cmd.getOptionValue("num-of-results", "50"));
+
+            if (cmd.hasOption("tuning-file")) {
+                Config.distance_file = cmd.getOptionValue("distance-file", "distance.txt");
+                GeneticTuning.initialize();
+                Config.tuning_file = cmd.getOptionValue("tuning-file");
+//                return;
+                GeneticTuning tuning = new GeneticTuning(Config.tuning_file);
+                while (true) {
+                    tuning.runPool();
+                }
+            }
+
             Config.compute_ap = cmd.hasOption("compute-ap");
             skip_index = cmd.hasOption("skip-index");
 
@@ -79,6 +104,7 @@ public class Main {
                 e.printStackTrace();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("INS", options);
         }
