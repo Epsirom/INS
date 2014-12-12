@@ -25,7 +25,9 @@ public class GeneticTuning {
 //    public static ArrayList<FeatureBuffer> datasetFeatures = new ArrayList<FeatureBuffer>(5062);
     public static ArrayList<ComputeAP> computeAPs = new ArrayList<ComputeAP>(55);
     public TreeSet<GeneticItem> pool = new TreeSet<GeneticItem>(Collections.reverseOrder());
-    public int maxPoolSize = 100;
+    public int maxPoolSize = 10000;
+    private int emSize = maxPoolSize / 10;
+    private int emCount = maxPoolSize / 100;
     protected File bindedFile = null;
     protected int tuning_round = 0;
     public static Random random = new Random();
@@ -33,6 +35,7 @@ public class GeneticTuning {
     public static DistanceManager dm;
 
     public static final float alter_rate = 0.1F;
+    public static final float new_rate = 0.05F;
 
     static {
         qoi.add("gt/all_souls_1_query.txt");
@@ -227,11 +230,23 @@ public class GeneticTuning {
     }
 
     public void addItemToPool(GeneticItem newItem) {
-        if (newItem.compareTo(pool.last()) > 0) {
+        if (pool.size() < maxPoolSize || newItem.compareTo(pool.last()) > 0) {
             pool.add(newItem);
             while (pool.size() > maxPoolSize) {
                 pool.remove(pool.last());
             }
+        }
+    }
+
+    public void eliminatePool() {
+        if (pool.size() < maxPoolSize - emCount) {
+            return;
+        }
+        int i = 0;
+        int dst = pool.size() - (maxPoolSize - emCount);
+        while (i < dst) {
+            ++i;
+            pool.remove(pool.last());
         }
     }
 
@@ -241,19 +256,24 @@ public class GeneticTuning {
 
     public void runPool() {
         ++this.tuning_round;
-        if (this.tuning_round % 1000 == 0) {
+        if (this.tuning_round % emSize == 0) {
             logger.info("Start tuning round {} ...", this.tuning_round);
         }
-        if (Math.random() < alter_rate) {
+        double r = Math.random();
+        if (r < new_rate) {
+            GeneticItem newItem = GeneticItem.randomItem();
+            addItemToPool(newItem);
+        } else if (r < new_rate + alter_rate) {
             GeneticItem newItem = randomItem().randomAlter();
             addItemToPool(newItem);
         } else {
             GeneticItem newItem = randomItem().giveBirth(randomItem());
             addItemToPool(newItem);
         }
-        if (this.tuning_round % 1000 == 0) {
+        if (this.tuning_round % emSize == 0) {
             savePool();
-            logger.info("Tuning round {} finished, current best: {}", this.tuning_round, pool.first().evaluation.avgAP);
+            eliminatePool();
+            logger.info("Tuning round {} finished, current best: {}", this.tuning_round, pool.first().getEP());
         }
     }
 }

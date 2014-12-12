@@ -13,4 +13,5 @@ public class Config {
     public static boolean compute_ap = false;
     public static String tuning_file = null;
     public static String distance_file = null;
+    public static String evaluate_param = null;
 }

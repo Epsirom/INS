@@ -42,9 +42,10 @@ public class DistanceManager {
         }
     }
 
-    public void autoComplete() {
+    public boolean autoComplete() {
+        boolean needSave = false;
         for (String query : GeneticTuning.qoi) {
-            System.out.println("Query: " + query);
+            System.out.println("Auto complete query: " + query);
             FeatureBuffer buffer = GeneticTuning.getROI(query);
             try {
                 IndexReader reader = LireIndexer.getReader();
@@ -72,6 +73,7 @@ public class DistanceManager {
                                 }
                                 if (dist >= 0) {
                                     setDistance(query, dataTag, fName, dist);
+                                    needSave = true;
                                 }
                             }
                             break;
@@ -82,6 +84,7 @@ public class DistanceManager {
                 e.printStackTrace();
             }
         }
+        return needSave;
     }
 
     public void save(File f) throws Exception {
@@ -116,8 +119,9 @@ public class DistanceManager {
             e.printStackTrace();
         }
         try {
-            dm.autoComplete();
-            dm.save(f);
+            if (dm.autoComplete()) {
+                dm.save(f);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

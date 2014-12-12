@@ -28,6 +28,12 @@ public class Main {
                 .withArgName("DISTANCE-FILE")
                 .create("df")
         );
+        options.addOption(OptionBuilder.withLongOpt("evaluate-param")
+                .withDescription("The param to be evaluated when tuning, default avg.")
+                .hasArg()
+                .withArgName("min/max/mid")
+                .create("ep")
+        );
         options.addOption(OptionBuilder.withLongOpt("index-path")
                 .withDescription("Set the directory where the index is.")
                 .hasArg()
@@ -81,6 +87,7 @@ public class Main {
 
             if (cmd.hasOption("tuning-file")) {
                 Config.distance_file = cmd.getOptionValue("distance-file", "distance.txt");
+                Config.evaluate_param = cmd.getOptionValue("evaluate-param", null);
                 GeneticTuning.initialize();
                 Config.tuning_file = cmd.getOptionValue("tuning-file");
 //                return;

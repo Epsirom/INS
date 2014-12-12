@@ -34,6 +34,10 @@ public class GeneticItem implements Comparable<GeneticItem> {
         featureNames.add("featPHOG");
     }
 
+    public GeneticItem() {
+
+    }
+
     public GeneticItem(Map<String, Float> weights) {
         for (String key : weights.keySet()) {
             featureWeights.put(key, weights.get(key));
@@ -59,6 +63,15 @@ public class GeneticItem implements Comparable<GeneticItem> {
     public GeneticItem(int id) {
         featureWeights.put(featureNames.get(id), 1.0F);
         evaluate();
+    }
+
+    public static GeneticItem randomItem() {
+        GeneticItem item = new GeneticItem();
+        for (String featureName : featureNames) {
+            item.featureWeights.put(featureName, (float)Math.random());
+        }
+        item.evaluate();
+        return item;
     }
 
     public String toString() {
@@ -169,12 +182,27 @@ public class GeneticItem implements Comparable<GeneticItem> {
         return item;
     }
 
+    public float getEP() {
+        if (Config.evaluate_param == null) {
+            return this.evaluation.avgAP;
+        } else if (Config.evaluate_param.equals("min")) {
+            return this.evaluation.minAP;
+        } else if (Config.evaluate_param.equals("max")) {
+            return this.evaluation.maxAP;
+        } else if (Config.evaluate_param.equals("mid")) {
+            return this.evaluation.midAP;
+        } else {
+            return this.evaluation.avgAP;
+        }
+    }
+
     @Override
     public int compareTo(GeneticItem o) {
-        if (o.evaluation.avgAP > this.evaluation.avgAP) {
-            return -1;
-        } else if (o.evaluation.avgAP < this.evaluation.avgAP) {
+        float ep = this.getEP(), o_ep = o.getEP();
+        if (ep > o_ep) {
             return 1;
+        } else if (ep < o_ep) {
+            return -1;
         } else {
             return 0;
         }
