@@ -35,10 +35,10 @@ import java.util.*;
  */
 public class MultiFeatureSearcher extends AbstractImageSearcher {
     private Logger logger = Base.logger(MultiFeatureSearcher.class);
-    private int maxHits = 10;
-    private HashMap<String, Float> featureWeights = new HashMap<String, Float>();
+    protected int maxHits = 10;
+    protected HashMap<String, Float> featureWeights = new HashMap<String, Float>();
     protected TreeSet<SimpleResult> docs = new TreeSet<SimpleResult>();
-    private float maxDistance = -1.0F;
+    protected float maxDistance = -1.0F;
     public static HashMap<String, Class<?>> featureMap = new HashMap<String, Class<?>>();
 
     static {
@@ -199,13 +199,13 @@ public class MultiFeatureSearcher extends AbstractImageSearcher {
                     this.maxDistance = dist;
                 }
                 if (this.docs.size() < this.maxHits) {
-                    this.docs.add(new SimpleResult(dist, doc, i));
+                    this.docs.add(new SimpleResult(dist, d, i));
                     if (dist > this.maxDistance) {
                         this.maxDistance = dist;
                     }
                 } else if (dist < this.maxDistance) {
                     this.docs.remove(this.docs.last());
-                    this.docs.add(new SimpleResult(dist, doc, i));
+                    this.docs.add(new SimpleResult(dist, d, i));
                     this.maxDistance = this.docs.last().getDistance();
                 }
             }
@@ -231,6 +231,7 @@ public class MultiFeatureSearcher extends AbstractImageSearcher {
                     f1.setByteArrayRepresentation(ref1.bytes, ref1.offset, ref1.length);
                     f2.setByteArrayRepresentation(ref2.bytes, ref2.offset, ref2.length);
                     dist += f1.getDistance(f2) * featureWeights.get(fieldName);
+//                    System.out.println(fieldName + ": " + f1.getDistance(f2) * featureWeights.get(fieldName));
                 }
             }
         }

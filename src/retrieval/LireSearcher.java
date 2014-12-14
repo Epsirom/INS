@@ -50,6 +50,24 @@ public class LireSearcher {
                 "featureSift")
         );*/
         searcher_map.put("sift", new SiftSearcher(n, "featureSift"));
+
+        HashMap<String, Float> multi_params = new HashMap<String, Float>();
+        multi_params.put("featureSift", 1.2120671F);
+        multi_params.put("featureCEDD", 0.007272746F);
+        multi_params.put("featureAutoColorCorrelogram", 0.0022112536F);
+        multi_params.put("descriptorEdgeHistogram", 0.10050783F);
+        multi_params.put("descriptorScalableColor", 1.7042719E-4F);
+        multi_params.put("featureFCTH", 0.037125666F);
+        multi_params.put("featureJCD", 0.0029745733F);
+        multi_params.put("featureColorHistogram", 5.5094148E-5F);
+        multi_params.put("featureTAMURA", 6.236415E-6F);
+        multi_params.put("featureGabor", 0.0015577332F);
+        multi_params.put("featureJpegCoeffs", 0.053962447F);
+        multi_params.put("featureJointHist", 0.0055411067F);
+        multi_params.put("featOpHist", 6.5759166E-5F);
+        multi_params.put("featLumLay", 0.12562963F);
+        multi_params.put("featPHOG", 0.0048611863F);
+        searcher_map.put("multi", new MultiFeatureSearcher(n, multi_params));
     }
 
     public static ImageSearcher getSearcher(String name) throws Exception {
@@ -140,7 +158,7 @@ public class LireSearcher {
     }
 
     public static void searchByConfig() throws Exception {
-        String searcher_name = "sift";
+        String searcher_name = "multi";
         if (Config.query_file != null) {
             try {
                 BufferedImage queryImage = getQueryImageByFile(Config.query_file);

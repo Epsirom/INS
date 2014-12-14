@@ -38,73 +38,80 @@ public class GeneticTuning {
     public static final float new_rate = 0.05F;
 
     static {
-        qoi.add("gt/all_souls_1_query.txt");
-        qoi.add("gt/all_souls_2_query.txt");
-        qoi.add("gt/all_souls_3_query.txt");
-        qoi.add("gt/all_souls_4_query.txt");
-        qoi.add("gt/all_souls_5_query.txt");
 
-        qoi.add("gt/ashmolean_1_query.txt");
-        qoi.add("gt/ashmolean_2_query.txt");
-        qoi.add("gt/ashmolean_3_query.txt");
-        qoi.add("gt/ashmolean_4_query.txt");
-        qoi.add("gt/ashmolean_5_query.txt");
+        if (true) {
+            qoi.add("gt/all_souls_1_query.txt");
+            qoi.add("gt/all_souls_2_query.txt");
+            qoi.add("gt/all_souls_3_query.txt");
+            qoi.add("gt/all_souls_4_query.txt");
+            qoi.add("gt/all_souls_5_query.txt");
 
-        qoi.add("gt/balliol_1_query.txt");
-        qoi.add("gt/balliol_2_query.txt");
-        qoi.add("gt/balliol_3_query.txt");
-        qoi.add("gt/balliol_4_query.txt");
-        qoi.add("gt/balliol_5_query.txt");
+            qoi.add("gt/ashmolean_1_query.txt");
+            qoi.add("gt/ashmolean_2_query.txt");
+            qoi.add("gt/ashmolean_3_query.txt");
+            qoi.add("gt/ashmolean_4_query.txt");
+            qoi.add("gt/ashmolean_5_query.txt");
 
-        qoi.add("gt/bodleian_1_query.txt");
-        qoi.add("gt/bodleian_2_query.txt");
-        qoi.add("gt/bodleian_3_query.txt");
-        qoi.add("gt/bodleian_4_query.txt");
-        qoi.add("gt/bodleian_5_query.txt");
+            qoi.add("gt/balliol_1_query.txt");
+            qoi.add("gt/balliol_2_query.txt");
+            qoi.add("gt/balliol_3_query.txt");
+            qoi.add("gt/balliol_4_query.txt");
+            qoi.add("gt/balliol_5_query.txt");
 
-        qoi.add("gt/christ_church_1_query.txt");
-        qoi.add("gt/christ_church_2_query.txt");
-        qoi.add("gt/christ_church_3_query.txt");
-        qoi.add("gt/christ_church_4_query.txt");
-        qoi.add("gt/christ_church_5_query.txt");
+            qoi.add("gt/bodleian_1_query.txt");
+            qoi.add("gt/bodleian_2_query.txt");
+            qoi.add("gt/bodleian_3_query.txt");
+            qoi.add("gt/bodleian_4_query.txt");
+            qoi.add("gt/bodleian_5_query.txt");
 
-        qoi.add("gt/cornmarket_1_query.txt");
-        qoi.add("gt/cornmarket_2_query.txt");
-        qoi.add("gt/cornmarket_3_query.txt");
-        qoi.add("gt/cornmarket_4_query.txt");
-        qoi.add("gt/cornmarket_5_query.txt");
+            qoi.add("gt/christ_church_1_query.txt");
+            qoi.add("gt/christ_church_2_query.txt");
+            qoi.add("gt/christ_church_3_query.txt");
+            qoi.add("gt/christ_church_4_query.txt");
+            qoi.add("gt/christ_church_5_query.txt");
+
+            qoi.add("gt/cornmarket_1_query.txt");
+            qoi.add("gt/cornmarket_2_query.txt");
+            qoi.add("gt/cornmarket_3_query.txt");
+            qoi.add("gt/cornmarket_4_query.txt");
+            qoi.add("gt/cornmarket_5_query.txt");
+        }
 
         /////////////////////////////////////////////
 
-        qoi.add("gt/hertford_1_query.txt");
-        qoi.add("gt/hertford_2_query.txt");
-        qoi.add("gt/hertford_3_query.txt");
-        qoi.add("gt/hertford_4_query.txt");
-        qoi.add("gt/hertford_5_query.txt");
+//        qoi.add("gt/keble_1_query.txt");
 
-        qoi.add("gt/keble_1_query.txt");
-        qoi.add("gt/keble_2_query.txt");
-        qoi.add("gt/keble_3_query.txt");
-        qoi.add("gt/keble_4_query.txt");
-        qoi.add("gt/keble_5_query.txt");
+        if (true) {
+            qoi.add("gt/hertford_1_query.txt");
+            qoi.add("gt/hertford_2_query.txt");
+            qoi.add("gt/hertford_3_query.txt");
+            qoi.add("gt/hertford_4_query.txt");
+            qoi.add("gt/hertford_5_query.txt");
 
-        qoi.add("gt/magdalen_1_query.txt");
-        qoi.add("gt/magdalen_2_query.txt");
-        qoi.add("gt/magdalen_3_query.txt");
-        qoi.add("gt/magdalen_4_query.txt");
-        qoi.add("gt/magdalen_5_query.txt");
+            qoi.add("gt/keble_1_query.txt");
+            qoi.add("gt/keble_2_query.txt");
+            qoi.add("gt/keble_3_query.txt");
+            qoi.add("gt/keble_4_query.txt");
+            qoi.add("gt/keble_5_query.txt");
 
-        qoi.add("gt/pitt_rivers_1_query.txt");
-        qoi.add("gt/pitt_rivers_2_query.txt");
-        qoi.add("gt/pitt_rivers_3_query.txt");
-        qoi.add("gt/pitt_rivers_4_query.txt");
-        qoi.add("gt/pitt_rivers_5_query.txt");
+            qoi.add("gt/magdalen_1_query.txt");
+            qoi.add("gt/magdalen_2_query.txt");
+            qoi.add("gt/magdalen_3_query.txt");
+            qoi.add("gt/magdalen_4_query.txt");
+            qoi.add("gt/magdalen_5_query.txt");
 
-        qoi.add("gt/radcliffe_camera_1_query.txt");
-        qoi.add("gt/radcliffe_camera_2_query.txt");
-        qoi.add("gt/radcliffe_camera_3_query.txt");
-        qoi.add("gt/radcliffe_camera_4_query.txt");
-        qoi.add("gt/radcliffe_camera_5_query.txt");
+            qoi.add("gt/pitt_rivers_1_query.txt");
+            qoi.add("gt/pitt_rivers_2_query.txt");
+            qoi.add("gt/pitt_rivers_3_query.txt");
+            qoi.add("gt/pitt_rivers_4_query.txt");
+            qoi.add("gt/pitt_rivers_5_query.txt");
+
+            qoi.add("gt/radcliffe_camera_1_query.txt");
+            qoi.add("gt/radcliffe_camera_2_query.txt");
+            qoi.add("gt/radcliffe_camera_3_query.txt");
+            qoi.add("gt/radcliffe_camera_4_query.txt");
+            qoi.add("gt/radcliffe_camera_5_query.txt");
+        }
     }
 
     public static FeatureBuffer getROI(String q) {

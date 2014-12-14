@@ -1,5 +1,6 @@
 package tuning;
 
+import entry.Config;
 import indexing.LireIndexer;
 import net.semanticmetadata.lire.DocumentBuilder;
 import net.semanticmetadata.lire.imageanalysis.LireFeature;
@@ -118,12 +119,14 @@ public class DistanceManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        try {
-            if (dm.autoComplete()) {
-                dm.save(f);
+        if (!Config.ignore_auto_complete) {
+            try {
+                if (dm.autoComplete()) {
+                    dm.save(f);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return dm;
     }

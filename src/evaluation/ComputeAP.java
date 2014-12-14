@@ -63,7 +63,7 @@ public class ComputeAP {
                 intersect_size++;
             }
             float recall = intersect_size / (float)pos_set.size();
-            float precision = intersect_size / j;
+            float precision = intersect_size / (j + 1.0F);
 
             ap += (recall - old_recall) * (old_precision + precision) / 2.0F;
             old_recall = recall;

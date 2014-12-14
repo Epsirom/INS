@@ -4,6 +4,7 @@ import indexing.LireIndexer;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import retrieval.LireSearcher;
+import tuning.GeneticItem;
 import tuning.GeneticTuning;
 
 public class Main {
@@ -72,6 +73,9 @@ public class Main {
                 .create("n")
         );
         options.addOption("ap", "compute-ap", false, "Compute the ap after retrieval.");
+        options.addOption("test", "test", false, "Get all aps by distance file.");
+        options.addOption("ft", "full-test", false, "Run full test.");
+        options.addOption("ia", "ignore-auto-complete", false, "Ignore auto complete step in loading distance file.");
         CommandLineParser parser = new BasicParser();
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -84,17 +88,33 @@ public class Main {
             Config.query_image = cmd.getOptionValue("query-image");
             Config.result_file = cmd.getOptionValue("result-file");
             Config.num_of_results = Integer.parseInt(cmd.getOptionValue("num-of-results", "50"));
+            Config.distance_file = cmd.getOptionValue("distance-file", "distance.txt");
+            Config.evaluate_param = cmd.getOptionValue("evaluate-param", null);
+
+            if (cmd.hasOption("ignore-auto-complete")) {
+                Config.ignore_auto_complete = true;
+            }
 
             if (cmd.hasOption("tuning-file")) {
-                Config.distance_file = cmd.getOptionValue("distance-file", "distance.txt");
-                Config.evaluate_param = cmd.getOptionValue("evaluate-param", null);
-                GeneticTuning.initialize();
                 Config.tuning_file = cmd.getOptionValue("tuning-file");
+                GeneticTuning.initialize();
 //                return;
                 GeneticTuning tuning = new GeneticTuning(Config.tuning_file);
                 while (true) {
                     tuning.runPool();
                 }
+            }
+
+            if (cmd.hasOption("test")) {
+                GeneticTuning.initialize();
+                GeneticItem.autoTest();
+                return;
+            }
+
+            if (cmd.hasOption("full-test")) {
+                GeneticTuning.initialize();
+                GeneticItem.fullTest();
+                return;
             }
 
             Config.compute_ap = cmd.hasOption("compute-ap");

@@ -14,4 +14,5 @@ public class Config {
     public static String tuning_file = null;
     public static String distance_file = null;
     public static String evaluate_param = null;
+    public static boolean ignore_auto_complete = false;
 }

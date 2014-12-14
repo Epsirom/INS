@@ -45,11 +45,16 @@ public class GeneticItem implements Comparable<GeneticItem> {
     }
 
     public GeneticItem(Scanner scanner) {
+        setByScanner(scanner);
+        evaluate();
+    }
+
+    public void setByScanner(Scanner scanner) {
         if (!scanner.hasNext()) {
             evaluate();
             return;
         }
-        featureWeights.put("featureSift", scanner.nextFloat());
+        //featureWeights.put("featureSift", scanner.nextFloat());
         for (String key : featureNames) {
             if (!scanner.hasNext()) {
                 evaluate();
@@ -57,7 +62,6 @@ public class GeneticItem implements Comparable<GeneticItem> {
             }
             featureWeights.put(key, scanner.nextFloat());
         }
-        evaluate();
     }
 
     public GeneticItem(int id) {
@@ -76,7 +80,7 @@ public class GeneticItem implements Comparable<GeneticItem> {
 
     public String toString() {
         String tmp = evaluation.avgAP + " " + evaluation.midAP + " " + evaluation.maxAP + " " + evaluation.minAP;
-        tmp += (" " + (featureWeights.containsKey("featureSift") ? featureWeights.get("featureSift") : 0.0F));
+        //tmp += (" " + (featureWeights.containsKey("featureSift") ? featureWeights.get("featureSift") : 0.0F));
         for (String key : featureNames) {
             tmp += (" " + (featureWeights.containsKey(key) ? featureWeights.get(key) : 0.0F));
         }
@@ -93,6 +97,9 @@ public class GeneticItem implements Comparable<GeneticItem> {
             for (String featureName : dm.distance.get(query).get(dataTag).keySet()) {
                 if (featureWeights.containsKey(featureName)) {
                     dist += dm.getDistance(query, dataTag, featureName) * featureWeights.get(featureName);
+//                    if (dataTag.equals("00895")) {
+//                        System.out.println(featureName + ":" + dm.getDistance(query, dataTag, featureName) + "*" + featureWeights.get(featureName) + "=" + dm.getDistance(query, dataTag, featureName) * featureWeights.get(featureName));
+//                    }
                 }
             }
             if (maxDistance < 0) {
@@ -116,7 +123,67 @@ public class GeneticItem implements Comparable<GeneticItem> {
         return result;
     }
 
-    public void evaluate() {
+    public static void fullTest() {
+        String[] params = new String[] {
+                "0.916739 -0.19634552 0.011117695 0.10252904 0.0 0.2860832 0.0018024673 0.0 0.0 0.0 0.0 0.0 6.0861363E-5 -0.25363192 0.0011360993",
+                "2.887865 0.008350551 0.02028375 0.4617432 0.0018666949 0.16933735 0.0051918235 0.008206222 0.0 0.0042483206 0.101685114 0.016859192 0.009118049 -0.34180298 0.026379004",
+                "1.7501068 -0.5038963 0.0097277425 0.038396254 0.029685218 0.27105823 0.13551159 0.0016981012 0.0 0.015474225 0.06058233 0.010360099 0.0065006074 -0.06913181 0.0123246545",
+                "1.2120671 0.007272746 0.0022112536 0.10050783 1.7042719E-4 0.037125666 0.0029745733 5.5094148E-5 6.236415E-6 0.0015577332 0.053962447 0.0055411067 6.5759166E-5 0.12562963 0.0048611863",
+                "2.3728526 0.017083421 0.05788247 0.17465495 0.013691798 0.017775401 -0.007904547 0.012115723 7.722818E-6 0.014155126 0.018507997 -0.009679886 -0.048411757 0.15738899 0.023479227",
+                "1.2590231 0.24824844 0.0029439535 0.10364805 0.001926594 0.021168191 0.037353627 0.0 0.0 0.0160876 -0.068394385 -9.276392E-4 -0.021278104 0.23223805 0.02068044",
+                "0.7828202 0.034721248 0.0 0.05375815 0.0 0.031381965 0.0 0.0 0.0 0.014024047 0.0 0.0 0.008270069 -0.29918662 0.0"
+        };
+        for (String p : params) {
+            testItem(p);
+        }
+    }
+
+    public static void autoTest() {
+        double[] tmp = new double[] {
+                1.2120671, 0/*0.007272746*/, 0/*0.0022112536*/, 0.10050783, 0/*1.7042719E-4*/,
+                0.037125666, 0/*0.0029745733*/, 0/*5.5094148E-5*/, 6.236415E-6, 0/*0.0015577332*/,
+                0.053962447, 0.0055411067, 0/*6.5759166E-5*/, 0.12562963, 0.0048611863
+        };
+        ArrayList<Float> w = new ArrayList<Float>();
+        for (double d : tmp) {
+            w.add((float)d);
+        }
+        testItem(w);
+    }
+
+    public static void testItem(String s) {
+        Scanner scanner = new Scanner(s);
+        GeneticItem item = new GeneticItem();
+        item.setByScanner(scanner);
+        item.testAndShow();
+    }
+
+    public static void testItem(ArrayList<Float> weights) {
+        int len = Math.min(weights.size(), featureNames.size());
+        HashMap<String, Float> wmap = new HashMap<String, Float>();
+        for (int i = 0; i < len; ++i) {
+            wmap.put(featureNames.get(i), weights.get(i));
+        }
+        GeneticItem item = new GeneticItem(wmap);
+        item.testAndShow();
+    }
+
+    public void testAndShow() {
+        System.out.print("=====================================");
+        GeneticItem item = this;
+        ArrayList<Float> aps = item.getAPs();
+        int len = GeneticTuning.qoi.size();
+        for (int i = 0; i < len; ++i) {
+            System.out.println(GeneticTuning.qoi.get(i) + ": " + aps.get(i));
+        }
+        item.evaluation = new FeatureEvaluation(aps);
+        System.out.println("Average: " + item.evaluation.avgAP);
+        System.out.println("Middle: " + item.evaluation.midAP);
+        System.out.println("Max: " + item.evaluation.maxAP);
+        System.out.println("Min: " + item.evaluation.minAP);
+    }
+
+    public ArrayList<Float> getAPs() {
         ArrayList<Float> aps = new ArrayList<Float>(GeneticTuning.qoi.size());
         int numROIs = GeneticTuning.qoi.size();
         for (int i = 0; i < numROIs; ++i) {
@@ -133,7 +200,11 @@ public class GeneticItem implements Comparable<GeneticItem> {
                 e.printStackTrace();
             }*/
         }
-        this.evaluation = new FeatureEvaluation(aps);
+        return aps;
+    }
+
+    public void evaluate() {
+        this.evaluation = new FeatureEvaluation(this.getAPs());
     }
 
     public GeneticItem randomAlter() {
